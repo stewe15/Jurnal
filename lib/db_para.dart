@@ -34,7 +34,8 @@ class DbPara {
         audit TEXT NOT NULL,
         paraGroup TEXT NOT NULL,
         dayOfWeek TEXT NOT NULL,
-        Time TEXT NOT NULL
+        Time TEXT NOT NULL,
+        week TEXT NOT NULL
 
       )
     ''');

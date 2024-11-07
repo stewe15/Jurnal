@@ -8,6 +8,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'db_helper.dart';
 import 'db_para.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() {
   databaseFactory = databaseFactoryFfi;
@@ -64,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _loadUsers();
+    _week.text = 'Числитель';
   }
 
   Future<void> _loadUsers() async {
@@ -102,73 +104,149 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  String dropwalue = 'Числитель';
+  var items_ = ['Числитель', 'Знаменатель'];
+  final TextEditingController _week = TextEditingController();
+
   Future<void> _updateRe() async {
     setState(() {
       re.clear();
       for (int i = 0; i < _users.length; i++) {
-        if (_users[i].dayOfWeek == "Понедельник" && "${focus}" == "Monday") {
-          setState(() {
-            re.add(function(
-                widget.x * 0.1,
-                widget.y,
-                "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
-                _users[i].group,
-                sd,
-                _users[i].name));
-          });
-        } else if (_users[i].dayOfWeek == "Вторник" &&
-            "${focus}" == "Tuesday") {
-          setState(() {
-            re.add(function(
-                widget.x * 0.1,
-                widget.y,
-                "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
-                _users[i].group,
-                sd,
-                _users[i].name));
-          });
-        } else if (_users[i].dayOfWeek == "Среда" &&
-            "${focus}" == "Wednesday") {
-          setState(() {
-            re.add(function(
-                widget.x * 0.1,
-                widget.y,
-                "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
-                _users[i].group,
-                sd,
-                _users[i].name));
-          });
-        } else if (_users[i].dayOfWeek == "Четверг" &&
-            "${focus}" == "Thursday") {
-          setState(() {
-            re.add(function(
-                widget.x * 0.1,
-                widget.y,
-                "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
-                _users[i].group,
-                sd,
-                _users[i].name));
-          });
-        } else if (_users[i].dayOfWeek == "Пятница" && "${focus}" == "Friday") {
-          setState(() {
-            re.add(function(
-                widget.x * 0.1,
-                widget.y,
-                "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
-                _users[i].group,
-                sd,
-                _users[i].name));
-          });
-        } else if (_users[i].dayOfWeek == "Суббота" && "${focus}" == "Sunday") {
-          setState(() {
-            re.add(function(
-                widget.x * 0.1,
-                widget.y,
-                "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
-                _users[i].group,
-                sd,
-                _users[i].name));
-          });
+        if (_week.text == 'Числитель' && _users[i].week == 'Числитель') {
+          if (_users[i].dayOfWeek == "Понедельник" && "${focus}" == "Monday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          } else if (_users[i].dayOfWeek == "Вторник" &&
+              "${focus}" == "Tuesday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          } else if (_users[i].dayOfWeek == "Среда" &&
+              "${focus}" == "Wednesday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          } else if (_users[i].dayOfWeek == "Четверг" &&
+              "${focus}" == "Thursday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          } else if (_users[i].dayOfWeek == "Пятница" &&
+              "${focus}" == "Friday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          } else if (_users[i].dayOfWeek == "Суббота" &&
+              "${focus}" == "Sunday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          }
+        } else if (_week.text == 'Знаменатель' &&
+            _users[i].week == 'Знаменатель') {
+          if (_users[i].dayOfWeek == "Понедельник" && "${focus}" == "Monday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          } else if (_users[i].dayOfWeek == "Вторник" &&
+              "${focus}" == "Tuesday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          } else if (_users[i].dayOfWeek == "Среда" &&
+              "${focus}" == "Wednesday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          } else if (_users[i].dayOfWeek == "Четверг" &&
+              "${focus}" == "Thursday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          } else if (_users[i].dayOfWeek == "Пятница" &&
+              "${focus}" == "Friday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          } else if (_users[i].dayOfWeek == "Суббота" &&
+              "${focus}" == "Sunday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          }
         }
       }
     });
@@ -239,6 +317,35 @@ class _MyHomePageState extends State<MyHomePage> {
                 _updateRe();
               });
             },
+          ),
+          Row(
+            children: [
+              Text("Выберите числитель или знаменатель"),
+              SizedBox(
+                width: 5,
+              ),
+              DropdownButton(
+                  value: dropwalue,
+                  icon: const Icon(Icons.keyboard_arrow_down),
+                  items: items_.map((String items_) {
+                    return DropdownMenuItem(
+                      value: items_,
+                      child: Text(items_),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      dropwalue = newValue!;
+                      if (dropwalue == "Числитель") {
+                        _week.text = "Числитель";
+                        dropwalue = 'Числитель';
+                      } else if (dropwalue == "Знаменатель") {
+                        _week.text = "Знаменатель";
+                        dropwalue = 'Знаменатель';
+                      }
+                    });
+                  }),
+            ],
           ),
           Expanded(
             child: ListView.builder(
@@ -327,6 +434,33 @@ class _GroupState extends State<Group> {
       await _dbHelper.deleteUser(_users[i].id as int);
     }
     _updateRe();
+  }
+
+  void _showConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Подтверждение"),
+          content: Text("Вы уверены, что хотите продолжить?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Закрыть диалог
+              },
+              child: Text("Нет"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Закрыть диалог
+                _del(); // Вызов функции удаления
+              },
+              child: Text("Да"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   String dropdownvalue = 'Первая';
@@ -432,11 +566,7 @@ class _GroupState extends State<Group> {
                       color: const Color.fromARGB(255, 243, 33, 33),
                       borderRadius: BorderRadius.circular(5)),
                   child: TextButton(
-                      onPressed: () {
-                        setState(() {
-                          _del();
-                        });
-                      },
+                      onPressed: _showConfirmationDialog,
                       child: const Text(
                         "Удалить всех",
                         style: TextStyle(color: Colors.white),
@@ -501,6 +631,33 @@ class _TimeTableRState extends State<TimeTableR> {
     );
   }
 
+  void _showConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Подтверждение"),
+          content: Text("Вы уверены, что хотите продолжить?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Закрыть диалог
+              },
+              child: Text("Нет"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Закрыть диалог
+                _del(); // Вызов функции удаления
+              },
+              child: Text("Да"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double x = MediaQuery.sizeOf(context).width;
@@ -521,11 +678,7 @@ class _TimeTableRState extends State<TimeTableR> {
                   color: const Color.fromARGB(255, 243, 33, 33),
                   borderRadius: BorderRadius.circular(5)),
               child: TextButton(
-                  onPressed: () {
-                    setState(() {
-                      _del();
-                    });
-                  },
+                  onPressed: _showConfirmationDialog,
                   child: const Text(
                     "Удалить расписание",
                     style: TextStyle(color: Colors.white),
@@ -641,20 +794,26 @@ class _TimeSetingsState extends State<TimeSetings> {
   final TextEditingController _groupControl = TextEditingController();
   final TextEditingController _paraNameControl = TextEditingController();
   final TextEditingController _audit = TextEditingController();
+  final TextEditingController _week = TextEditingController();
   String dropdownvalue = 'Первая';
+  String dropwalue = 'Числитель';
+  var items_ = ['Числитель', 'Знаменатель'];
   var items = ['Первая', 'Вторая', 'Общая'];
   final DbPara _dbPara = DbPara();
   void _addPara() async {
     if (_groupControl.text.isNotEmpty &&
         _paraNameControl.text.isNotEmpty &&
-        _audit.text.isNotEmpty) {
+        _audit.text.isNotEmpty &&
+        _week.text.isNotEmpty) {
       Para newPara = Para(
           name: _paraNameControl.text,
           audit: _audit.text,
           group: _groupControl.text,
           dayOfWeek: widget.day,
-          Time: widget.tm);
+          Time: widget.tm,
+          week: _week.text);
       await _dbPara.insertUser(newPara);
+      _week.clear();
       _groupControl.clear();
       _paraNameControl.clear();
       _audit.clear();
@@ -705,6 +864,35 @@ class _TimeSetingsState extends State<TimeSetings> {
                       } else if (dropdownvalue == "Общая") {
                         _groupControl.text = "Общая";
                         dropdownvalue = 'Общая';
+                      }
+                    });
+                  }),
+            ],
+          ),
+          Row(
+            children: [
+              Text("Выберите числитель или знаменатель"),
+              SizedBox(
+                width: 5,
+              ),
+              DropdownButton(
+                  value: dropwalue,
+                  icon: const Icon(Icons.keyboard_arrow_down),
+                  items: items_.map((String items_) {
+                    return DropdownMenuItem(
+                      value: items_,
+                      child: Text(items_),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      dropwalue = newValue!;
+                      if (dropwalue == "Числитель") {
+                        _week.text = "Числитель";
+                        dropwalue = 'Числитель';
+                      } else if (dropwalue == "Знаменатель") {
+                        _week.text = "Знаменатель";
+                        dropwalue = 'Знаменатель';
                       }
                     });
                   }),
@@ -892,6 +1080,33 @@ class _SkiplistState extends State<Skiplist> {
     });
   }
 
+  void _showConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Подтверждение"),
+          content: Text("Вы уверены, что хотите продолжить?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Закрыть диалог
+              },
+              child: Text("Нет"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Закрыть диалог
+                _removeAllSkips(); // Вызов функции удаления
+              },
+              child: Text("Да"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -915,11 +1130,7 @@ class _SkiplistState extends State<Skiplist> {
             decoration: BoxDecoration(
                 color: Colors.blue, borderRadius: BorderRadius.circular(5)),
             child: TextButton(
-                onPressed: () {
-                  setState(() {
-                    _removeAllSkips();
-                  });
-                },
+                onPressed: _showConfirmationDialog,
                 child: Text(
                   "Удалить все пропуски",
                   style: TextStyle(color: Colors.white),
