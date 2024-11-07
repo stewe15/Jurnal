@@ -247,6 +247,73 @@ class _MyHomePageState extends State<MyHomePage> {
                   _users[i].name));
             });
           }
+        } else if (_users[i].week == 'Инста') {
+          if (_users[i].dayOfWeek == "Понедельник" && "${focus}" == "Monday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          } else if (_users[i].dayOfWeek == "Вторник" &&
+              "${focus}" == "Tuesday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          } else if (_users[i].dayOfWeek == "Среда" &&
+              "${focus}" == "Wednesday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          } else if (_users[i].dayOfWeek == "Четверг" &&
+              "${focus}" == "Thursday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          } else if (_users[i].dayOfWeek == "Пятница" &&
+              "${focus}" == "Friday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          } else if (_users[i].dayOfWeek == "Суббота" &&
+              "${focus}" == "Sunday") {
+            setState(() {
+              re.add(function(
+                  widget.x * 0.1,
+                  widget.y,
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  _users[i].group,
+                  sd,
+                  _users[i].name));
+            });
+          }
         }
       }
     });
@@ -356,7 +423,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 }),
           ),
-          Text("${focus}\t${sd}")
+          Text("${sd}")
         ],
       ),
     );
@@ -446,14 +513,14 @@ class _GroupState extends State<Group> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Закрыть диалог
+                Navigator.of(context).pop();
               },
               child: Text("Нет"),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Закрыть диалог
-                _del(); // Вызов функции удаления
+                Navigator.of(context).pop();
+                _del();
               },
               child: Text("Да"),
             ),
@@ -641,14 +708,14 @@ class _TimeTableRState extends State<TimeTableR> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Закрыть диалог
+                Navigator.of(context).pop();
               },
               child: Text("Нет"),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Закрыть диалог
-                _del(); // Вызов функции удаления
+                Navigator.of(context).pop();
+                _del();
               },
               child: Text("Да"),
             ),
@@ -797,9 +864,16 @@ class _TimeSetingsState extends State<TimeSetings> {
   final TextEditingController _week = TextEditingController();
   String dropdownvalue = 'Первая';
   String dropwalue = 'Числитель';
-  var items_ = ['Числитель', 'Знаменатель'];
+  var items_ = ['Числитель', 'Знаменатель', 'Инста'];
   var items = ['Первая', 'Вторая', 'Общая'];
   final DbPara _dbPara = DbPara();
+  @override
+  void initState() {
+    super.initState();
+    _week.text = 'Числитель';
+    _groupControl.text = "Первая";
+  }
+
   void _addPara() async {
     if (_groupControl.text.isNotEmpty &&
         _paraNameControl.text.isNotEmpty &&
@@ -893,6 +967,9 @@ class _TimeSetingsState extends State<TimeSetings> {
                       } else if (dropwalue == "Знаменатель") {
                         _week.text = "Знаменатель";
                         dropwalue = 'Знаменатель';
+                      } else if (dropwalue == "Инста") {
+                        _week.text = "Инста";
+                        dropwalue = 'Инста';
                       }
                     });
                   }),
@@ -1090,14 +1167,14 @@ class _SkiplistState extends State<Skiplist> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Закрыть диалог
+                Navigator.of(context).pop();
               },
               child: Text("Нет"),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Закрыть диалог
-                _removeAllSkips(); // Вызов функции удаления
+                Navigator.of(context).pop();
+                _removeAllSkips();
               },
               child: Text("Да"),
             ),
