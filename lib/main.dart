@@ -318,7 +318,7 @@ class _MyHomePageState extends State<MyHomePage> {
               });
             },
           ),
-          Row(
+          Column(
             children: [
               Text("Выберите числитель или знаменатель"),
               SizedBox(
@@ -869,7 +869,7 @@ class _TimeSetingsState extends State<TimeSetings> {
                   }),
             ],
           ),
-          Row(
+          Column(
             children: [
               Text("Выберите числитель или знаменатель"),
               SizedBox(
