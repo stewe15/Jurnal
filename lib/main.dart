@@ -9,6 +9,8 @@ import 'package:table_calendar/table_calendar.dart';
 import 'db_helper.dart';
 import 'db_para.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:excel/excel.dart';
+import 'dart:io';
 
 void main() {
   databaseFactory = databaseFactoryFfi;
@@ -76,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Container function(
-      x, y, String nm, String gro_, String time_of, String name_s) {
+      x, y, String nm, String gro_, String time_of, String name_s, String tp) {
     return Container(
       width: x,
       height: y * 0.3,
@@ -93,6 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             gro: gro_,
                             time_of: time_of,
                             nm: name_s,
+                            type: tp,
                           )));
             });
           },
@@ -118,10 +121,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           } else if (_users[i].dayOfWeek == "Вторник" &&
               "${focus}" == "Tuesday") {
@@ -129,10 +133,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           } else if (_users[i].dayOfWeek == "Среда" &&
               "${focus}" == "Wednesday") {
@@ -140,10 +145,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           } else if (_users[i].dayOfWeek == "Четверг" &&
               "${focus}" == "Thursday") {
@@ -151,10 +157,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           } else if (_users[i].dayOfWeek == "Пятница" &&
               "${focus}" == "Friday") {
@@ -162,10 +169,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           } else if (_users[i].dayOfWeek == "Суббота" &&
               "${focus}" == "Sunday") {
@@ -173,10 +181,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           }
         } else if (_week.text == 'Знаменатель' &&
@@ -186,10 +195,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           } else if (_users[i].dayOfWeek == "Вторник" &&
               "${focus}" == "Tuesday") {
@@ -197,10 +207,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           } else if (_users[i].dayOfWeek == "Среда" &&
               "${focus}" == "Wednesday") {
@@ -208,10 +219,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           } else if (_users[i].dayOfWeek == "Четверг" &&
               "${focus}" == "Thursday") {
@@ -219,10 +231,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           } else if (_users[i].dayOfWeek == "Пятница" &&
               "${focus}" == "Friday") {
@@ -230,10 +243,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           } else if (_users[i].dayOfWeek == "Суббота" &&
               "${focus}" == "Sunday") {
@@ -241,10 +255,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           }
         } else if (_users[i].week == 'Инста') {
@@ -253,10 +268,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           } else if (_users[i].dayOfWeek == "Вторник" &&
               "${focus}" == "Tuesday") {
@@ -264,10 +280,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           } else if (_users[i].dayOfWeek == "Среда" &&
               "${focus}" == "Wednesday") {
@@ -275,10 +292,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           } else if (_users[i].dayOfWeek == "Четверг" &&
               "${focus}" == "Thursday") {
@@ -286,10 +304,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           } else if (_users[i].dayOfWeek == "Пятница" &&
               "${focus}" == "Friday") {
@@ -297,10 +316,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           } else if (_users[i].dayOfWeek == "Суббота" &&
               "${focus}" == "Sunday") {
@@ -308,10 +328,11 @@ class _MyHomePageState extends State<MyHomePage> {
               re.add(function(
                   widget.x * 0.1,
                   widget.y,
-                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}",
+                  "Время ${_users[i].Time}\nИмя ${_users[i].name}\nГруппа ${_users[i].group}\nАудитория ${_users[i].audit}\nТип: ${_users[i].type}",
                   _users[i].group,
                   sd,
-                  _users[i].name));
+                  _users[i].name,
+                  _users[i].type));
             });
           }
         }
@@ -862,30 +883,36 @@ class _TimeSetingsState extends State<TimeSetings> {
   final TextEditingController _paraNameControl = TextEditingController();
   final TextEditingController _audit = TextEditingController();
   final TextEditingController _week = TextEditingController();
+  final TextEditingController _type = TextEditingController();
   String dropdownvalue = 'Первая';
   String dropwalue = 'Числитель';
+  String dr = 'Семинар';
   var items_ = ['Числитель', 'Знаменатель', 'Инста'];
   var items = ['Первая', 'Вторая', 'Общая'];
+  var it = ['Семинар', 'Лекция', 'Лаба'];
   final DbPara _dbPara = DbPara();
   @override
   void initState() {
     super.initState();
     _week.text = 'Числитель';
     _groupControl.text = "Первая";
+    _type.text = 'Семинар';
   }
 
   void _addPara() async {
     if (_groupControl.text.isNotEmpty &&
         _paraNameControl.text.isNotEmpty &&
         _audit.text.isNotEmpty &&
-        _week.text.isNotEmpty) {
+        _week.text.isNotEmpty &&
+        _type.text.isNotEmpty) {
       Para newPara = Para(
           name: _paraNameControl.text,
           audit: _audit.text,
           group: _groupControl.text,
           dayOfWeek: widget.day,
           Time: widget.tm,
-          week: _week.text);
+          week: _week.text,
+          type: _type.text);
       await _dbPara.insertUser(newPara);
       _week.clear();
       _groupControl.clear();
@@ -945,6 +972,37 @@ class _TimeSetingsState extends State<TimeSetings> {
           ),
           Column(
             children: [
+              Text("Выберите тип"),
+              SizedBox(
+                width: 5,
+              ),
+              DropdownButton(
+                  value: dr,
+                  icon: const Icon(Icons.keyboard_arrow_down),
+                  items: it.map((String it) {
+                    return DropdownMenuItem(
+                      value: it,
+                      child: Text(it),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      dr = newValue!;
+                      if (dr == "Семинар") {
+                        _type.text = "Семинар";
+                        dr = 'Семинар';
+                      } else if (dr == "Лекция") {
+                        _type.text = "Лекция";
+                        dr = 'Лекция';
+                      } else if (dr == "Лаба") {
+                        _type.text = "Лаба";
+                        dr = 'Лаба';
+                      }
+                    });
+                  }),
+              SizedBox(
+                width: 5,
+              ),
               Text("Выберите числитель или знаменатель"),
               SizedBox(
                 width: 5,
@@ -998,8 +1056,13 @@ class StudentList extends StatefulWidget {
   final String gro;
   final String time_of;
   final String nm;
+  final String type;
   const StudentList(
-      {super.key, required this.gro, required this.time_of, required this.nm});
+      {super.key,
+      required this.gro,
+      required this.time_of,
+      required this.nm,
+      required this.type});
 
   @override
   State<StudentList> createState() => _StudentListState();
@@ -1028,7 +1091,9 @@ class _StudentListState extends State<StudentList> {
 
   Future<void> addSkip(int i) async {
     Skip sk = Skip(
-        time_of: widget.time_of, nm: "${_users[i].username}\t${widget.nm}");
+        time_of: widget.time_of,
+        nm: "${_users[i].username}\t${widget.nm}",
+        type: widget.type);
     await _dbSkip.insertUser(sk);
   }
 
@@ -1113,6 +1178,8 @@ class Skiplist extends StatefulWidget {
 
 class _SkiplistState extends State<Skiplist> {
   List<Widget> re = [];
+  final DatabaseHelper _dbHelper = DatabaseHelper();
+  List<User> _users = [];
   final DbSkip _dbSkip = DbSkip();
   List<Skip> _skips = [];
   @override
@@ -1123,8 +1190,10 @@ class _SkiplistState extends State<Skiplist> {
 
   Future<void> _loadSkips() async {
     List<Skip> skips = await _dbSkip.getUsers();
+    List<User> users = await _dbHelper.getUsers();
     setState(() {
       _skips = skips;
+      _users = users;
     });
     _updateRe();
   }
@@ -1184,6 +1253,49 @@ class _SkiplistState extends State<Skiplist> {
     );
   }
 
+  void createExcelFile() async {
+    var excel = Excel.createExcel();
+    Sheet sheet = excel['Sheet1'];
+    sheet.cell(CellIndex.indexByString('A1')).value = TextCellValue("ФИО");
+    sheet.cell(CellIndex.indexByString('B1')).value = TextCellValue("Лекции");
+    sheet.cell(CellIndex.indexByString('C1')).value = TextCellValue("Лабы");
+    sheet.cell(CellIndex.indexByString('D1')).value = TextCellValue("Семы");
+    for (int i = 0; i < _users.length; i++) {
+      sheet.cell(CellIndex.indexByString("A${i + 2}")).value =
+          TextCellValue(_users[i].username);
+    }
+
+    for (int i = 0; i < _users.length; i++) {
+      int lection_skip = 0;
+      int sem = 0;
+      int lab = 0;
+      for (int j = 0; j < _skips.length; j++) {
+        if (_users[i].username == _skips[j].nm.split('\t')[0] &&
+            _skips[j].type == 'Семинар') {
+          sem = sem + 1;
+        } else if (_users[i].username == _skips[j].nm.split('\t')[0] &&
+            _skips[j].type == 'Лекция') {
+          lection_skip = lection_skip + 1;
+        } else if (_users[i].username == _skips[j].nm.split('\t')[0] &&
+            _skips[j].type == 'Лаба') {
+          lab = lab + 1;
+        }
+      }
+      sheet.cell(CellIndex.indexByString('B${i + 2}')).value =
+          TextCellValue(lection_skip.toString());
+      sheet.cell(CellIndex.indexByString('C${i + 2}')).value =
+          TextCellValue(sem.toString());
+      sheet.cell(CellIndex.indexByString('D${i + 2}')).value =
+          TextCellValue(lab.toString());
+    }
+    Directory directory = await getApplicationDocumentsDirectory();
+    String filePath = "${directory.path}/gr.xlsx";
+
+    var file = File(filePath);
+    List<int>? fileBytes = excel.save();
+    await file.writeAsBytes(fileBytes!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1201,17 +1313,36 @@ class _SkiplistState extends State<Skiplist> {
                   );
                 }),
           ),
-          Container(
-            width: x_,
-            height: y_ * 0.1,
-            decoration: BoxDecoration(
-                color: Colors.blue, borderRadius: BorderRadius.circular(5)),
-            child: TextButton(
-                onPressed: _showConfirmationDialog,
-                child: Text(
-                  "Удалить все пропуски",
-                  style: TextStyle(color: Colors.white),
-                )),
+          Row(
+            children: [
+              Container(
+                width: x_ * 0.49,
+                height: y_ * 0.1,
+                decoration: BoxDecoration(
+                    color: Colors.blue, borderRadius: BorderRadius.circular(5)),
+                child: TextButton(
+                    onPressed: _showConfirmationDialog,
+                    child: Text(
+                      "Удалить все пропуски",
+                      style: TextStyle(color: Colors.white),
+                    )),
+              ),
+              SizedBox(
+                width: x_ * 0.02,
+              ),
+              Container(
+                width: x_ * 0.49,
+                height: y_ * 0.1,
+                decoration: BoxDecoration(
+                    color: Colors.blue, borderRadius: BorderRadius.circular(5)),
+                child: TextButton(
+                    onPressed: createExcelFile,
+                    child: Text(
+                      "Экспорт в excel",
+                      style: TextStyle(color: Colors.white),
+                    )),
+              ),
+            ],
           )
         ],
       ),

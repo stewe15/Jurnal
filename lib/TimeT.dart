@@ -6,6 +6,7 @@ class Para {
   final String dayOfWeek;
   final String Time;
   final String week;
+  final String type;
   Para(
       {this.id,
       required this.name,
@@ -13,7 +14,8 @@ class Para {
       required this.group,
       required this.dayOfWeek,
       required this.Time,
-      required this.week});
+      required this.week,
+      required this.type});
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -22,7 +24,8 @@ class Para {
       'paraGroup': group,
       'dayOfWeek': dayOfWeek,
       'Time': Time,
-      'week': week
+      'week': week,
+      'type': type
     };
   }
 
@@ -34,6 +37,7 @@ class Para {
         group: map['paraGroup'] ?? '',
         dayOfWeek: map['dayOfWeek'] ?? '',
         Time: map['Time'] ?? '',
-        week: map['week'] ?? '');
+        week: map['week'] ?? '',
+        type: map['type'] ?? '');
   }
 }

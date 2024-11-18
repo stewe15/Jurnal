@@ -32,7 +32,8 @@ class DbSkip {
       CREATE TABLE skip(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         time_of TEXT NOT NULL,
-        nm TEXT NOT NULL
+        nm TEXT NOT NULL,
+        type TEXT NOT NULL
 
       )
     ''');
