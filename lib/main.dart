@@ -11,6 +11,8 @@ import 'db_para.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:excel/excel.dart';
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   databaseFactory = databaseFactoryFfi;
@@ -1253,6 +1255,39 @@ class _SkiplistState extends State<Skiplist> {
     );
   }
 
+  void _showPath(String pth) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Сохранено"),
+          content: Text(pth),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Ок"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> requestStoragePermission() async {
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
+  }
+
+ 
+Future<String> getStoragePath() async {
+  final directory = await getExternalStorageDirectory();
+  return directory?.path ?? ''; // Возвращаем путь или пустую строку, если directory равен null
+}
+
   void createExcelFile() async {
     var excel = Excel.createExcel();
     Sheet sheet = excel['Sheet1'];
@@ -1288,12 +1323,15 @@ class _SkiplistState extends State<Skiplist> {
       sheet.cell(CellIndex.indexByString('D${i + 2}')).value =
           TextCellValue(lab.toString());
     }
-    Directory directory = await getApplicationDocumentsDirectory();
-    String filePath = "${directory.path}/gr.xlsx";
+    await requestStoragePermission();
+    
+    String storagePath = await getStoragePath();
+    String filePath = "$storagePath/gr.xlsx";
 
     var file = File(filePath);
     List<int>? fileBytes = excel.save();
     await file.writeAsBytes(fileBytes!);
+    _showPath("${file}");
   }
 
   @override
