@@ -1076,11 +1076,20 @@ class _StudentListState extends State<StudentList> {
   List<User> _users = [];
   Color _defaultColor = Color.fromARGB(255, 33, 117, 243);
   List<Color> _buttonColors = [];
+  List<Skip> _skips = [];
 
   @override
   void initState() {
     super.initState();
     _loadUsers();
+    _loadSkips();
+  }
+
+  Future<void> _loadSkips() async {
+    List<Skip> skips = await _dbSkip.getUsers();
+    setState(() {
+      _skips = skips;
+    });
   }
 
   Future<void> _loadUsers() async {
@@ -1097,6 +1106,13 @@ class _StudentListState extends State<StudentList> {
         nm: "${_users[i].username}\t${widget.nm}",
         type: widget.type);
     await _dbSkip.insertUser(sk);
+    _loadSkips();
+  }
+
+  Future<void> removeSkip(int index) async {
+    await _dbSkip.deleteUser(
+        _skips[index].id as int); 
+    _loadSkips();
   }
 
   @override
@@ -1130,6 +1146,12 @@ class _StudentListState extends State<StudentList> {
                           setState(() {
                             _buttonColors[index] = Colors.red;
                             addSkip(index);
+                          });
+                        },
+                        onLongPress: () {
+                          setState(() {
+                            _buttonColors[index] = _defaultColor; 
+                            removeSkip(index); 
                           });
                         },
                         child: Text(
@@ -1212,7 +1234,7 @@ class _SkiplistState extends State<Skiplist> {
               setState(() {});
             },
             child: Text(
-              "${_skips[i].nm}\t${_skips[i].time_of}",
+              "${_skips[i].id} ${_skips[i].nm}\t${_skips[i].time_of}",
               style: TextStyle(color: Colors.white),
             )),
       ));
@@ -1281,13 +1303,10 @@ class _SkiplistState extends State<Skiplist> {
       await Permission.storage.request();
     }
   }
-
- 
-Future<String> getStoragePath() async {
-  final directory = await getExternalStorageDirectory();
-  return directory?.path ?? ''; // Возвращаем путь или пустую строку, если directory равен null
-}
-
+  Future<String> getStoragePath() async {
+    final directory = await getExternalStorageDirectory();
+    return directory?.path ?? '';
+  }
   void createExcelFile() async {
     var excel = Excel.createExcel();
     Sheet sheet = excel['Sheet1'];
@@ -1324,7 +1343,7 @@ Future<String> getStoragePath() async {
           TextCellValue(lab.toString());
     }
     await requestStoragePermission();
-    
+
     String storagePath = await getStoragePath();
     String filePath = "$storagePath/gr.xlsx";
 
