@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:jurnal/Skip.dart';
@@ -1352,7 +1354,8 @@ class _SkiplistState extends State<Skiplist> {
     await requestStoragePermission();
 
     String storagePath = await getStoragePath();
-    String filePath = "$storagePath/gr.xlsx";
+    var intValue = Random().nextInt(256000);
+    String filePath = "$storagePath/gr${intValue}.xlsx";
 
     var file = File(filePath);
     List<int>? fileBytes = excel.save();
