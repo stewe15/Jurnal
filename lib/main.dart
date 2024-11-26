@@ -1352,10 +1352,6 @@ class _SkiplistState extends State<Skiplist> {
     await requestStoragePermission();
 
     String storagePath = await getStoragePath();
-    String pathToremove = await getStoragePath();
-    pathToremove = "$pathToremove/gr.xlsx";
-    var fl = File(pathToremove);
-    fl.delete();
     String filePath = "$storagePath/gr.xlsx";
 
     var file = File(filePath);
