@@ -1059,12 +1059,14 @@ class StudentList extends StatefulWidget {
   final String time_of;
   final String nm;
   final String type;
-  const StudentList(
-      {super.key,
-      required this.gro,
-      required this.time_of,
-      required this.nm,
-      required this.type});
+
+  const StudentList({
+    super.key,
+    required this.gro,
+    required this.time_of,
+    required this.nm,
+    required this.type,
+  });
 
   @override
   State<StudentList> createState() => _StudentListState();
@@ -1075,14 +1077,15 @@ class _StudentListState extends State<StudentList> {
   final DbSkip _dbSkip = DbSkip();
   List<User> _users = [];
   Color _defaultColor = Color.fromARGB(255, 33, 117, 243);
-  List<Color> _buttonColors = [];
   List<Skip> _skips = [];
+  List<bool> _selectedUsers = [];
 
   @override
   void initState() {
     super.initState();
     _loadUsers();
     _loadSkips();
+    _selectedUsers = [];
   }
 
   Future<void> _loadSkips() async {
@@ -1096,23 +1099,28 @@ class _StudentListState extends State<StudentList> {
     List<User> users = await _dbHelper.getUsers();
     setState(() {
       _users = users;
-      _buttonColors = List<Color>.filled(users.length, _defaultColor);
+      _selectedUsers = List<bool>.filled(users.length, false);
     });
   }
 
   Future<void> addSkip(int i) async {
     Skip sk = Skip(
-        time_of: widget.time_of,
-        nm: "${_users[i].username}\t${widget.nm}",
-        type: widget.type);
+      time_of: widget.time_of,
+      nm: "${_users[i].username}\t${widget.nm}",
+      type: widget.type,
+    );
     await _dbSkip.insertUser(sk);
     _loadSkips();
   }
 
-  Future<void> removeSkip(int index) async {
-    await _dbSkip.deleteUser(
-        _skips[index].id as int); 
-    _loadSkips();
+  Future<void> removeSkip(String timeOf) async {
+    try {
+      final skipToRemove = _skips.firstWhere(
+        (skip) => skip.time_of == timeOf,
+      );
+      await _dbSkip.deleteUser(skipToRemove.id as int);
+      _loadSkips();
+    } catch (e) {}
   }
 
   @override
@@ -1134,31 +1142,28 @@ class _StudentListState extends State<StudentList> {
                     (widget.gro == "Общая")) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: double.infinity,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: _buttonColors[index],
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            _buttonColors[index] = Colors.red;
-                            addSkip(index);
-                          });
-                        },
-                        onLongPress: () {
-                          setState(() {
-                            _buttonColors[index] = _defaultColor; 
-                            removeSkip(index); 
-                          });
-                        },
-                        child: Text(
-                          "${_users[index].username}",
-                          style: TextStyle(color: Colors.white),
+                    child: Row(
+                      children: [
+                        Checkbox(
+                          value: _selectedUsers[index],
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _selectedUsers[index] = value ?? false;
+                              if (value == true) {
+                                addSkip(index);
+                              } else {
+                                removeSkip(widget.time_of);
+                              }
+                            });
+                          },
                         ),
-                      ),
+                        Expanded(
+                          child: Text(
+                            "${_users[index].username}",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ],
                     ),
                   );
                 } else {
@@ -1234,7 +1239,7 @@ class _SkiplistState extends State<Skiplist> {
               setState(() {});
             },
             child: Text(
-              "${_skips[i].id} ${_skips[i].nm}\t${_skips[i].time_of}",
+              "${_skips[i].nm}\t${_skips[i].time_of}",
               style: TextStyle(color: Colors.white),
             )),
       ));
@@ -1303,10 +1308,12 @@ class _SkiplistState extends State<Skiplist> {
       await Permission.storage.request();
     }
   }
+
   Future<String> getStoragePath() async {
     final directory = await getExternalStorageDirectory();
     return directory?.path ?? '';
   }
+
   void createExcelFile() async {
     var excel = Excel.createExcel();
     Sheet sheet = excel['Sheet1'];
@@ -1345,6 +1352,10 @@ class _SkiplistState extends State<Skiplist> {
     await requestStoragePermission();
 
     String storagePath = await getStoragePath();
+    String pathToremove = await getStoragePath();
+    pathToremove = "$pathToremove/gr.xlsx";
+    var fl = File(pathToremove);
+    fl.delete();
     String filePath = "$storagePath/gr.xlsx";
 
     var file = File(filePath);
