@@ -356,87 +356,128 @@ class _MyHomePageState extends State<MyHomePage> {
     double y = MediaQuery.sizeOf(context).height;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Журнал"),
+        title: const Text(
+          "Журнал",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
         actions: [
           Column(
             children: [
-              DropdownButton(
-                  value: dropdownvalue,
-                  icon: const Icon(Icons.keyboard_arrow_down),
-                  items: items.map((String items) {
-                    return DropdownMenuItem(
-                      value: items,
-                      child: Text(items),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      dropdownvalue = newValue!;
-                      if (dropdownvalue == "Список группы") {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Group(x: x, y: y)));
-                        dropdownvalue = 'Календарь';
-                      } else if (dropdownvalue == "Расписание") {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const TimeTableR()));
-                        dropdownvalue = 'Календарь';
-                      }
-                    });
-                  })
+              Theme(
+                data: Theme.of(context).copyWith(canvasColor: Colors.blue),
+                child: DropdownButton(
+                    value: dropdownvalue,
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    items: items.map((String items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Text(
+                          items,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        dropdownvalue = newValue!;
+                        if (dropdownvalue == "Список группы") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Group(x: x, y: y)));
+                          dropdownvalue = 'Календарь';
+                        } else if (dropdownvalue == "Расписание") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const TimeTableR()));
+                          dropdownvalue = 'Календарь';
+                        }
+                      });
+                    }),
+              )
             ],
           )
         ],
       ),
       body: Column(
         children: [
-          TableCalendar(
-            headerStyle: HeaderStyle(formatButtonVisible: false),
-            firstDay: DateTime.utc(2010, 10, 16),
-            lastDay: DateTime.utc(2030, 3, 14),
-            focusedDay: DateTime.now(),
-            selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _selectedDay = selectedDay;
-                focus = formatD.format(selectedDay);
-                sd = ddd.format(selectedDay);
-                _updateRe();
-              });
-            },
+          Container(
+            child: TableCalendar(
+              headerStyle: HeaderStyle(
+                formatButtonVisible: false,
+              ),
+              firstDay: DateTime.utc(2010, 10, 16),
+              lastDay: DateTime.utc(2030, 3, 14),
+              focusedDay: DateTime.now(),
+              calendarStyle: const CalendarStyle(
+                defaultTextStyle: TextStyle(color: Colors.black),
+              ),
+              selectedDayPredicate: (day) {
+                return isSameDay(_selectedDay, day);
+              },
+              onDaySelected: (selectedDay, focusedDay) {
+                setState(() {
+                  _selectedDay = selectedDay;
+                  focus = formatD.format(selectedDay);
+                  sd = ddd.format(selectedDay);
+                  _updateRe();
+                });
+              },
+            ),
           ),
           Column(
             children: [
-              Text("Выберите числитель или знаменатель"),
               SizedBox(
                 width: 5,
               ),
-              DropdownButton(
-                  value: dropwalue,
-                  icon: const Icon(Icons.keyboard_arrow_down),
-                  items: items_.map((String items_) {
-                    return DropdownMenuItem(
-                      value: items_,
-                      child: Text(items_),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      dropwalue = newValue!;
-                      if (dropwalue == "Числитель") {
-                        _week.text = "Числитель";
-                        dropwalue = 'Числитель';
-                      } else if (dropwalue == "Знаменатель") {
-                        _week.text = "Знаменатель";
-                        dropwalue = 'Знаменатель';
-                      }
-                    });
-                  }),
+              Container(
+                  width: x,
+                  child: Center(
+                    child: Text(
+                      "Выберите числитель или знаменатель",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  )),
+              SizedBox(
+                width: 5,
+              ),
+              Theme(
+                data: Theme.of(context).copyWith(canvasColor: Colors.blue),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(8.0)),
+                  child: DropdownButton(
+                      value: dropwalue,
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      items: items_.map((String items_) {
+                        return DropdownMenuItem(
+                          value: items_,
+                          child: Center(
+                            child: Text(
+                              items_,
+                              style: TextStyle(color: Colors.white),
+                              selectionColor: Colors.blue,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropwalue = newValue!;
+                          if (dropwalue == "Числитель") {
+                            _week.text = "Числитель";
+                            dropwalue = 'Числитель';
+                          } else if (dropwalue == "Знаменатель") {
+                            _week.text = "Знаменатель";
+                            dropwalue = 'Знаменатель';
+                          }
+                        });
+                      }),
+                ),
+              ),
             ],
           ),
           Expanded(
